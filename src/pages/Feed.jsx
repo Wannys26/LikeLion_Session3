@@ -3,7 +3,7 @@ import { FeedHeader } from '../components/FeedHeader';
 import { FeedImage } from '../components/FeedImage';
 import FeedImg from '../assets/FeedImg.jpg';
 import StoryImg from '../assets/StoryImg.jpg';
-import {useEffect, useState} from "react";
+import {useEffect, useState, useRef} from "react";
 
 
 export const Feed = () => {
@@ -17,11 +17,20 @@ export const Feed = () => {
     }
   ]);
 
+  const likeCountRef = useRef(0); // 누른 횟수 저장
+
   useEffect(() => {
     console.log(feedData);
   }, [feedData]);
 
   const handleLike = () => {
+    if (likeCountRef.current >= 3) {
+      console.log("더 이상 좋아요를 누를 수 없습니다.");
+      return;
+    }
+
+    likeCountRef.current += 1;
+
     setFeedData(([feed]) => [{
       ...feed,
       likes: feed.likes + 1
